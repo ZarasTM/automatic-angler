@@ -2,6 +2,7 @@ from ScreenScrapper import ScreenScrapper
 from pynput import keyboard, mouse
 import time
 
+# Key and mouse clickers
 keyCtrl = keyboard.Controller()
 mouseCtrl = mouse.Controller()
 
@@ -32,6 +33,7 @@ def mainLoop():
             restartState()
         else:
             print("Not recognized state number ", state)
+            return False
 
 # Idle state represented by 0
 def idleState():
@@ -45,7 +47,7 @@ def prepState():
     tmpPix = scr.currFrame[scr.pullPix[0], scr.pullPix[1]]
     keyCtrl.press(keyboard.Key.space)
 
-    if isInRange(tmpPix, pullColor):
+    if isInRange(tmpPix, pullColor, 4):
         global state
         state = 2
 
@@ -55,12 +57,12 @@ def pullState():
     stateChangePix = scr.currFrame[scr.resPix[0], scr.resPix[1]]
 
     # Pull controll
-    if isInRange(catchPix, pullColor):
+    if isInRange(catchPix, pullColor, 4):
         keyCtrl.release(keyboard.Key.space)
     else:
         keyCtrl.press(keyboard.Key.space)
 
-    if isInRange(stateChangePix, resColor):
+    if isInRange(stateChangePix, resColor, 4):
         global state
         state = 3
 
@@ -79,10 +81,11 @@ def restartState():
     global state
     state = 0
 
-def isInRange(pix, col):
-    if pix[0] > col[0]-4 and pix[0] < col[0]+4:
-        if pix[1] > col[1]-4 and pix[1] < col[1]+4:
-            if pix[2] > col[2]-4 and pix[2] < col[2]+4:
+# Checks if given pixel color is in given color +- err
+def isInRange(pix, col, err):
+    if pix[0] > col[0]-err and pix[0] < col[0]+err:
+        if pix[1] > col[1]-err and pix[1] < col[1]+err:
+            if pix[2] > col[2]-err and pix[2] < col[2]+err:
                 return True
             else:
                 return False
