@@ -12,7 +12,7 @@ To run this bot you will need Python along with given libraries:
   * pynput
   * Pillow (PIL)
 
-To install libraries you can run **install.sh** for Linux distibutions or **install.cmd** for Windows (you need to have python and pip installed for it to work).
+To install libraries you can run **install.sh** for Linux distibutions or **install.bat** for Windows (you need to have python and pip installed for it to work).
 
 # Running bot
 
@@ -22,7 +22,7 @@ To run bot follow steps below:
   3. Turn game into full screen mode and wait for bot to start
   4. If you want to stop catching:
       1. Exit full screen mode
-      2. Press `Ctrl+C` in console to interrupt program execution
+      2. Press `Ctrl+C` in console to interrupt program execution *(Closing window should work as well)*
       
 # Todo
   * There is problem where sometimes fish can get away and bot doesn't know what to do
