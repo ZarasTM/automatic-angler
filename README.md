@@ -1,8 +1,10 @@
 # Automatic angler
 Bot that automatcally catches fishes in "Gone Fishing" browser game
 
-(Installation of neeeded components)[README.md#Installation-of-needed-components] \
-(Running bot)[README.md#Running-bot]
+# Conspect
+[Installation of neeeded components](README.md#Installation-of-needed-components) \
+[Running bot](README.md#Running-bot) \
+[Todo](README.md#Todo)
 
 # Installation of needed components
 
@@ -21,3 +23,9 @@ To run bot follow steps below:
   4. If you want to stop catching:
       1. Exit full screen mode
       2. Press `Ctrl+C` in console to interrupt program execution
+      
+# Todo
+  * There is problem where sometimes fish can get away and bot doesn't know what to do then
+  * It would be nice to have bot start on key press and stop on key press
+  * Option to pause bot would be nice to have
+  * ...
