@@ -13,8 +13,9 @@ class ScreenScrapper:
     currFrame = []
 
     # Pixel data
-    pullCtrlPix = [0, 0]
-    resPix = [0, 0]
+    pullPix = [0, 0]    # Pixel to check if we got fish on hook
+    resPix = [0, 0]     # Pixel to check if we should pull or release
+    exitPix = [0, 0]    # Pixel to exit popup window
 
     # Constructor
     def __init__(self):
@@ -27,9 +28,17 @@ class ScreenScrapper:
         self.gameRes[0] = int((72*self.screenRes[1])/66)
         self.gameRes[1] = self.screenRes[1]
         self.margin = int((self.screenRes[0] - self.gameRes[0]) / 2)
-        self.pullCtrlPix = [
+        self.pullPix = [
             int(self.gameRes[0]/2),
-            int(self.gameRes[1]*0.422)
+            int(self.gameRes[1]*0.41)
+        ]
+        self.resPix = [
+            int(self.gameRes[0]*0.438),
+            int(self.gameRes[1]*0.4962)
+        ]
+        self.exitPix = [
+            int(self.margin + self.gameRes[0]*0.904),
+            int(self.gameRes[1]*0.207)
         ]
 
     # Updates game frame

@@ -1,37 +1,34 @@
 from ScreenScrapper import ScreenScrapper
-import pynput, time
+from pynput import keyboard, mouse
+import time
 
-'''
-TODO:
-    - Rewrite pixel color checking
-    - Change pullCtrlPix coordinates
-    - Add resPix
-    - Start tests
-'''
+keyCtrl = keyboard.Controller()
+mouseCtrl = mouse.Controller()
 
-
-time.sleep(10)
-
-keyCtrl = Controller()
+# Give time to turn on game in full screen mode
+time.sleep(5)
 
 # Object to get screen data
 scr = ScreenScrapper()
-scr.saveImg()
+
+# Controll pixel colors
+pullColor = (73, 182, 53)
+resColor = (225, 193, 50)
 
 # State of a game
 state = 0
 
 def mainLoop():
-    while true:
+    while True:
         scr.updateFrame()
 
-        if state = 0:
+        if state == 0:
             idleState()
-        elif state = 1:
+        elif state == 1:
             prepState()
-        elif state = 2:
+        elif state == 2:
             pullState()
-        elif state = 3:
+        elif state == 3:
             restartState()
         else:
             print("Not recognized state number ", state)
@@ -39,37 +36,59 @@ def mainLoop():
 # Idle state represented by 0
 def idleState():
     time.sleep(1)
-    keyCtrl.press(Key.space)
+    keyCtrl.press(keyboard.Key.space)
+    global state
     state = 1
 
 # Prep state represented by 1
 def prepState():
-    tmpPix = scr.currFrame[src.pullCtrlPix[0], src.pullCtrlPix[1]]
+    tmpPix = scr.currFrame[scr.pullPix[0], scr.pullPix[1]]
+    keyCtrl.press(keyboard.Key.space)
 
-    if isInRange(tmpPix):
+    if isInRange(tmpPix, pullColor):
+        global state
         state = 2
 
 # Pull state represented by 2
 def pullState():
-    ctrlPix = scr.currFrame[src.pullCtrlPix[0], src.pullCtrlPix[1]]
+    catchPix = scr.currFrame[scr.pullPix[0], scr.pullPix[1]]
+    stateChangePix = scr.currFrame[scr.resPix[0], scr.resPix[1]]
 
-    if isInRange(ctrlPix):
-        keyCtrl.release(Key.space)
+    # Pull controll
+    if isInRange(catchPix, pullColor):
+        keyCtrl.release(keyboard.Key.space)
     else:
-        keyCtrl.press(Key.space)
+        keyCtrl.press(keyboard.Key.space)
 
-# Restart state represented by 2
+    if isInRange(stateChangePix, resColor):
+        global state
+        state = 3
+
+# Restart state represented by 3
 def restartState():
-    print("In restart state")
+    keyCtrl.release(keyboard.Key.space)
 
-def isInRange(pix):
-    if pix[0] > 57 && pix[0] < 65:
-        if pix[1] > 95 && pix[1] < 103:
-            if pix[2] > 131 && pix[2] < 139:
-                return true
+    # Click X in the corner of popup window
+    mouseCtrl.position = scr.exitPix
+    mouseCtrl.click(mouse.Button.left, 1)
+
+    # Wait and reset focus on the game
+    time.sleep(1)
+    mouseCtrl.click(mouse.Button.left, 1)
+
+    global state
+    state = 0
+
+def isInRange(pix, col):
+    if pix[0] > col[0]-4 and pix[0] < col[0]+4:
+        if pix[1] > col[1]-4 and pix[1] < col[1]+4:
+            if pix[2] > col[2]-4 and pix[2] < col[2]+4:
+                return True
             else:
-                return false
+                return False
         else:
-            return false
+            return False
     else:
-        return false
+        return False
+
+mainLoop()
