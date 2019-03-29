@@ -2,6 +2,7 @@
 Bot that automatcally catches fishes in "Gone Fishing" browser game
 
 # Conspect
+[License](LICENSE) \
 [Installation of needed components](README.md#Installation-of-needed-components) \
 [Running bot](README.md#Running-bot) \
 [Todo](README.md#Todo)
