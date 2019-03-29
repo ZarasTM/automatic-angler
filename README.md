@@ -25,7 +25,7 @@ To run bot follow steps below:
       2. Press `Ctrl+C` in console to interrupt program execution
       
 # Todo
-  * There is problem where sometimes fish can get away and bot doesn't know what to do then
-  * It would be nice to have bot start on key press and stop on key press
-  * Option to pause bot would be nice to have
+  * There is problem where sometimes fish can get away and bot doesn't know what to do
+  * It would be nice to start on key press and stop on key press
+  * Option to pause would be nice to have
   * ...
