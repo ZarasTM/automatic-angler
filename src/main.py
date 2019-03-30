@@ -1,10 +1,19 @@
+from pynput import keyboard, mouse
+import datetime, sys, time, os
+import logging, logging.config
+
+# Check if log file is not too big
+try:
+    size = int(os.stat("./logs.log").st_size)
+
+    # If file is larger than 500 MB remove it
+    if size > 524288000:
+        os.remove("./logs.log")
+except:
+    pass
+
 from ScreenScrapper import ScreenScrapper
 from KeyListener import KeyListener
-from pynput import keyboard, mouse
-import datetime
-import time
-import logging
-import logging.config
 
 # Logger
 logging.config.fileConfig(fname='logging.conf', disable_existing_loggers=False)
@@ -21,6 +30,8 @@ listener.start()
 
 # Wait until start
 while not listener.s:
+    if listener.q:
+        break
     time.sleep(1)
 
 # Object to get screen data

@@ -1,7 +1,6 @@
 from PIL import Image, ImageGrab
 import math
-import logging
-import logging.config
+import logging, logging.config
 
 # Logger
 logging.config.fileConfig(fname='logging.conf', disable_existing_loggers=False)
