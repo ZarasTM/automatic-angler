@@ -6,8 +6,8 @@ import logging, logging.config
 try:
     size = int(os.stat("./logs.log").st_size)
 
-    # If file is larger than 500 MB remove it
-    if size > 524288000:
+    # If file is larger than 10 MiB remove it
+    if size > 10*1024*1024:
         os.remove("./logs.log")
 except:
     pass
