@@ -19,14 +19,12 @@ To install libraries you can run **install.sh** for Linux distibutions or **inst
 
 To run bot follow steps below:
   1. Enter the game, make sure that no in game popups are present and get ready to turn it to full screen mode *(Full screen mode is toggled by clicking rectangle in top-right side of game window)*
-  2. Run **main.py** using command `python main.py` or by double clicking **main.py** *(Now you have 5 sec to do step 3.)*
-  3. Turn game into full screen mode and wait for bot to start
-  4. If you want to stop catching:
-      1. Exit full screen mode
-      2. Press `Ctrl+C` in console to interrupt program execution *(Closing window should work as well)*
+  2. Run **main.py** using command `python main.py` or by double clicking **main.py**
+  3. Turn game into full screen mode
+     * If you want to start caching press **s** key
+     * If you want to pause/continue catching press **p** key
+     * If you want to stop catching press **q** key
       
 # Todo
-  * There is problem where sometimes fish can get away and bot doesn't know what to do
-  * It would be nice to start on key press and stop on key press
-  * Option to pause would be nice to have
-  * ...
+  * There is problem where sometimes fish can get away while using weaker fishing rods
+
