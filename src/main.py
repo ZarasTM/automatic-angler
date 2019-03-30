@@ -1,13 +1,38 @@
-from ScreenScrapper import ScreenScrapper
 from pynput import keyboard, mouse
-import time
+import datetime, sys, time, os
+import logging, logging.config
 
-# Key and mouse clickers
+# Check if log file is not too big
+try:
+    size = int(os.stat("./logs.log").st_size)
+
+    # If file is larger than 500 MB remove it
+    if size > 524288000:
+        os.remove("./logs.log")
+except:
+    pass
+
+from ScreenScrapper import ScreenScrapper
+from KeyListener import KeyListener
+
+# Logger
+logging.config.fileConfig(fname='logging.conf', disable_existing_loggers=False)
+logger = logging.getLogger('root')
+
+# Key and mouse clickers/listeners
+logger.info("Initializing controllers")
 keyCtrl = keyboard.Controller()
 mouseCtrl = mouse.Controller()
+listener = KeyListener()
 
-# Give time to turn on game in full screen mode
-time.sleep(5)
+logger.info("Starting listener")
+listener.start()
+
+# Wait until start
+while not listener.s:
+    if listener.q:
+        break
+    time.sleep(1)
 
 # Object to get screen data
 scr = ScreenScrapper()
@@ -18,10 +43,23 @@ resColor = (225, 193, 50)
 
 # State of a game
 state = 0
+logger.info("Entering main loop in idle state")
 
 def mainLoop():
     while True:
         scr.updateFrame()
+
+        # Handle quitting
+        if listener.q:
+            return False
+
+        # Handle pausing
+        if listener.p:
+            keyCtrl.release(keyboard.Key.space)
+            time.sleep(1)
+            global state
+            state = 0
+            continue
 
         if state == 0:
             idleState()
@@ -32,7 +70,7 @@ def mainLoop():
         elif state == 3:
             restartState()
         else:
-            print("Not recognized state number ", state)
+            logger.error("Not recognized state number %s", state)
             return False
 
 # Idle state represented by 0
@@ -40,6 +78,7 @@ def idleState():
     time.sleep(1)
     keyCtrl.press(keyboard.Key.space)
     global state
+    logger.info("Entering prep state")
     state = 1
 
 # Prep state represented by 1
@@ -49,6 +88,7 @@ def prepState():
 
     if isInRange(tmpPix, pullColor, 4):
         global state
+        logger.info("Entering pull state")
         state = 2
 
 # Pull state represented by 2
@@ -64,6 +104,7 @@ def pullState():
 
     if isInRange(stateChangePix, resColor, 4):
         global state
+        logger.info("Entering restart state")
         state = 3
 
 # Restart state represented by 3
@@ -79,10 +120,12 @@ def restartState():
     mouseCtrl.click(mouse.Button.left, 1)
 
     global state
+    logger.info("Entering idle state")
     state = 0
 
 # Checks if given pixel color is in given color +- err
 def isInRange(pix, col, err):
+    logger.debug("Checking range for:\tPIX= %s\tCOL=%s\tERR=%s", pix, col, err)
     if pix[0] > col[0]-err and pix[0] < col[0]+err:
         if pix[1] > col[1]-err and pix[1] < col[1]+err:
             if pix[2] > col[2]-err and pix[2] < col[2]+err:

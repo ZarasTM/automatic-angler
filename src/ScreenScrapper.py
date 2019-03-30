@@ -1,5 +1,10 @@
 from PIL import Image, ImageGrab
 import math
+import logging, logging.config
+
+# Logger
+logging.config.fileConfig(fname='logging.conf', disable_existing_loggers=False)
+logger = logging.getLogger('screen_scrapper')
 
 class ScreenScrapper:
     # Screen/Game resolution
@@ -21,6 +26,7 @@ class ScreenScrapper:
     def __init__(self):
         self.screenRes = ImageGrab.grab().size
         self.calcGameWindow()
+        logger.info("Initializing screen scrapper")
         self.updateFrame()
 
     # Calculates all data needed for operating with game itself
@@ -40,6 +46,14 @@ class ScreenScrapper:
             int(self.margin + self.gameRes[0]*0.904),
             int(self.gameRes[1]*0.207)
         ]
+        logger.debug("Screen scrapper data:\n\tscreen_res=%s\n\tgame_res=%s\n\tmargin=%s\n\tpullPix=%s\n\tresPix=%s\n\texitPix=%s",
+            self.screenRes,
+            self.gameRes,
+            self.margin,
+            self.pullPix,
+            self.resPix,
+            self.exitPix
+        )
 
     # Updates game frame
     def updateFrame(self):
