@@ -1,26 +1,26 @@
 from pynput import keyboard
-import datetime
 import logging
+import logging.config
+
+# Logger
+logging.config.fileConfig(fname='logging.conf', disable_existing_loggers=False)
+logger = logging.getLogger('key_listener')
 
 class KeyListener(keyboard.Listener):
     s, p, q = False, False, False
 
-    def __init__(self, logger=None):
-        super(KeyListener, self).__init__(self.on_press, self.on_release)
-        self.logger = logger
+    def __init__(self):
+        logger.info("Initializing key listener")
+        super(KeyListener, self).__init__(self.on_press)
 
     def on_press(self, key):
         keyStr = str(key)[1:-1]
         if keyStr == 's':
-            self.logger.debug("%s: START", datetime.datetime.now())
             self.s = True
+            logger.info("Starting bot")
         elif keyStr == 'p':
-            self.logger.debug("%s: PAUSE", datetime.datetime.now())
             self.p = not self.p
+            logger.info("Pausing bot = %s", self.p)
         elif keyStr == 'q':
-            self.logger.debug("%s: QUIT", datetime.datetime.now())
             self.q = True
-
-
-    def on_release(self, key):
-        print()
+            logger.info("Quitting bot")

@@ -4,16 +4,19 @@ from pynput import keyboard, mouse
 import datetime
 import time
 import logging
+import logging.config
 
 # Logger
-logging.basicConfig(filename='logs.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-logger = logging.getLogger(__name__)
+logging.config.fileConfig(fname='logging.conf', disable_existing_loggers=False)
+logger = logging.getLogger('root')
 
 # Key and mouse clickers/listeners
+logger.info("Initializing controllers")
 keyCtrl = keyboard.Controller()
 mouseCtrl = mouse.Controller()
-listener = KeyListener(logger)
+listener = KeyListener()
 
+logger.info("Starting listener")
 listener.start()
 
 # Wait until start
@@ -29,6 +32,7 @@ resColor = (225, 193, 50)
 
 # State of a game
 state = 0
+logger.info("Entering main loop in idle state")
 
 def mainLoop():
     while True:
@@ -40,9 +44,11 @@ def mainLoop():
 
         # Handle pausing
         if listener.p:
+            keyCtrl.release(keyboard.Key.space)
             time.sleep(1)
             global state
             state = 0
+            continue
 
         if state == 0:
             idleState()
@@ -53,7 +59,7 @@ def mainLoop():
         elif state == 3:
             restartState()
         else:
-            logger.error("%s: Not recognized state number %s", datetime.datetime.now(), state)
+            logger.error("Not recognized state number %s", state)
             return False
 
 # Idle state represented by 0
@@ -61,6 +67,7 @@ def idleState():
     time.sleep(1)
     keyCtrl.press(keyboard.Key.space)
     global state
+    logger.info("Entering prep state")
     state = 1
 
 # Prep state represented by 1
@@ -70,6 +77,7 @@ def prepState():
 
     if isInRange(tmpPix, pullColor, 4):
         global state
+        logger.info("Entering pull state")
         state = 2
 
 # Pull state represented by 2
@@ -85,6 +93,7 @@ def pullState():
 
     if isInRange(stateChangePix, resColor, 4):
         global state
+        logger.info("Entering restart state")
         state = 3
 
 # Restart state represented by 3
@@ -100,10 +109,12 @@ def restartState():
     mouseCtrl.click(mouse.Button.left, 1)
 
     global state
+    logger.info("Entering idle state")
     state = 0
 
 # Checks if given pixel color is in given color +- err
 def isInRange(pix, col, err):
+    logger.debug("Checking range for:\tPIX= %s\tCOL=%s\tERR=%s", pix, col, err)
     if pix[0] > col[0]-err and pix[0] < col[0]+err:
         if pix[1] > col[1]-err and pix[1] < col[1]+err:
             if pix[2] > col[2]-err and pix[2] < col[2]+err:
