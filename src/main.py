@@ -111,6 +111,9 @@ def pullState():
 def restartState():
     keyCtrl.release(keyboard.Key.space)
 
+    # Wait to show what fish was caught
+    time.sleep(3)
+
     # Click X in the corner of popup window
     mouseCtrl.position = scr.exitPix
     mouseCtrl.click(mouse.Button.left, 1)
@@ -125,7 +128,7 @@ def restartState():
 
 # Checks if given pixel is in given color +- err
 def isInRange(pix, col, err):
-    logger.debug("Checking range for:\tPIX= %s\tCOL=%s\tERR=%s", pix, col, err)
+    #logger.debug("Checking range for:\tPIX= %s\tCOL=%s\tERR=%s", pix, col, err)
     if pix[0] > col[0]-err and pix[0] < col[0]+err:
         if pix[1] > col[1]-err and pix[1] < col[1]+err:
             if pix[2] > col[2]-err and pix[2] < col[2]+err:
