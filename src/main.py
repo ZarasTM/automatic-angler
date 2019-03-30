@@ -1,13 +1,24 @@
 from ScreenScrapper import ScreenScrapper
+from KeyListener import KeyListener
 from pynput import keyboard, mouse
+import datetime
 import time
+import logging
 
-# Key and mouse clickers
+# Logger
+logging.basicConfig(filename='logs.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
+
+# Key and mouse clickers/listeners
 keyCtrl = keyboard.Controller()
 mouseCtrl = mouse.Controller()
+listener = KeyListener(logger)
 
-# Give time to turn on game in full screen mode
-time.sleep(5)
+listener.start()
+
+# Wait until start
+while not listener.s:
+    time.sleep(1)
 
 # Object to get screen data
 scr = ScreenScrapper()
@@ -23,6 +34,16 @@ def mainLoop():
     while True:
         scr.updateFrame()
 
+        # Handle quitting
+        if listener.q:
+            return False
+
+        # Handle pausing
+        if listener.p:
+            time.sleep(1)
+            global state
+            state = 0
+
         if state == 0:
             idleState()
         elif state == 1:
@@ -32,7 +53,7 @@ def mainLoop():
         elif state == 3:
             restartState()
         else:
-            print("Not recognized state number ", state)
+            logger.error("%s: Not recognized state number %s", datetime.datetime.now(), state)
             return False
 
 # Idle state represented by 0
