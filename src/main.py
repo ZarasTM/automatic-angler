@@ -123,7 +123,7 @@ def restartState():
     logger.info("Entering idle state")
     state = 0
 
-# Checks if given pixel color is in given color +- err
+# Checks if given pixel is in given color +- err
 def isInRange(pix, col, err):
     logger.debug("Checking range for:\tPIX= %s\tCOL=%s\tERR=%s", pix, col, err)
     if pix[0] > col[0]-err and pix[0] < col[0]+err:
