@@ -27,4 +27,5 @@ To run bot follow steps below:
       
 # Todo
   * There is problem where sometimes fish can get away while using weaker fishing rods
+  * File **install.sh** is not always working as intended *(no danger of running it, just doesn't work sometimes)* 
 
