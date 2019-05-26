@@ -6,7 +6,7 @@ logging.config.fileConfig(fname='logging.conf', disable_existing_loggers=False)
 logger = logging.getLogger('key_listener')
 
 class KeyListener(keyboard.Listener):
-    s, p, q = False, False, False
+    s, p, q, a = False, False, False
 
     def __init__(self):
         logger.info("Initializing key listener")
@@ -23,3 +23,6 @@ class KeyListener(keyboard.Listener):
         elif keyStr == 'q':
             self.q = True
             logger.info("Quitting bot")
+		elif ketStr == 'a':
+			self.a = True
+			logger.info("Abandoning fish")

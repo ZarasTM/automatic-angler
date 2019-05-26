@@ -90,7 +90,8 @@ def prepState():
         global state
         logger.info("Entering pull state")
         state = 2
-
+		listener.a = False
+		
 # Pull state represented by 2
 def pullState():
     catchPix = scr.currFrame[scr.pullPix[0], scr.pullPix[1]]
@@ -106,6 +107,18 @@ def pullState():
         global state
         logger.info("Entering restart state")
         state = 3
+		
+	# Abandod catching fish
+	'''
+	if listener.a:
+		time.sleep(3)
+		keyCtrl.press(keyboard.Key.esc)
+		keyCtrl.release(keyboard.Key.esc)
+		keyCtrl.release(keyboard.Key.space)
+		global state
+        logger.info("Entering idle state")
+		state = 0
+	'''
 
 # Restart state represented by 3
 def restartState():
