@@ -13,7 +13,7 @@ To run this bot you will need Python along with given libraries:
   * pynput
   * Pillow (PIL)
 
-To install libraries you can run **install.sh** for Linux distibutions or **install.bat** for Windows (you need to have python and pip installed for it to work).
+To install libraries you can run **install_lib.sh** for Linux distibutions or **install_lib.bat** for Windows (you need to have python and pip installed for it to work).
 
 # Running bot
 
@@ -27,5 +27,5 @@ To run bot follow steps below:
       
 # Todo
   * There is problem where sometimes fish can get away while using weaker fishing rods
-  * File **install.sh** is not always working as intended *(no danger of running it, just doesn't work sometimes)* 
+  * File **install_lib.sh** is not always working as intended *(no danger of running it, just doesn't work sometimes)* 
 
